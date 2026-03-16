@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-
+import sys
 
 a = Analysis(
     ['run.py'],
@@ -16,25 +16,36 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
-exe = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.datas,
-    [],
-    name='PDFMerger',
-    debug=False,
-    bootloader_ignore_signals=True,
-    strip=False,
-    upx=False,
-    upx_exclude=[],
-    runtime_tmpdir=None,
-    console=False,
-    disable_windowed_traceback=True,
-    argv_emulation=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
-    icon=['pdf_icon.ico'],
-    windowed=True,
-)
+# Mac 和 Windows 使用不同的图标
+if sys.platform == 'darwin':
+    # Mac 不使用图标
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.datas,
+        [],
+        name='PDFMerger',
+        debug=False,
+        bootloader_ignore_signals=True,
+        strip=False,
+        upx=False,
+        console=False,
+    )
+    app = BUNDLE(exe, name='PDFMerger.app', icon=None)
+else:
+    # Windows
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.datas,
+        [],
+        name='PDFMerger',
+        debug=False,
+        bootloader_ignore_signals=True,
+        strip=False,
+        upx=False,
+        console=False,
+        icon=['pdf_icon.ico'],
+    )
