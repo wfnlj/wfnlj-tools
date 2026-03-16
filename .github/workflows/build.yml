@@ -52,8 +52,35 @@ jobs:
       - name: Build with PyInstaller
         run: pyinstaller PDFMerger.spec
 
+      - name: Create zip for Mac
+        run: cd dist && zip -r PDFMerger-Mac.zip PDFMerger.app
+
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
         with:
           name: PDFMerger-Mac
-          path: dist/PDFMerger.app
+          path: dist/PDFMerger-Mac.zip
+
+  create-release:
+    needs: [build-windows, build-mac]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PDFMerger-Windows
+          path: ./release
+
+      - name: Download Mac artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PDFMerger-Mac
+          path: ./release
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./release/*
+          generate_release_notes: true
