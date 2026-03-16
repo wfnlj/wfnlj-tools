@@ -1,24 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 import sys
+from PyInstaller.utils.hooks import collect_all
+
+# 收集 PyPDF2 的所有模块
+pyPDF2_datas, pyPDF2_binaries, pyPDF2_hiddenimports = collect_all('PyPDF2')
+pil_datas, pil_binaries, pil_hiddenimports = collect_all('PIL')
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=[
-        'PyPDF2',
-        'PyPDF2.PdfReader',
-        'PyPDF2.PdfWriter',
-        'PyPDF2.pager',
-        'PyPDF2.utils',
-        'PyPDF2.generic',
-        'PyPDF2.filters',
-        'PyPDF2.xmp',
-        'PIL',
-        'PIL.Image',
-        'numpy',
-    ],
+    binaries=pyPDF2_binaries + pil_binaries,
+    datas=pyPDF2_datas + pil_datas,
+    hiddenimports=pyPDF2_hiddenimports + pil_hiddenimports + ['numpy'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
