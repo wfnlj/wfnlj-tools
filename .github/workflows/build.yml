@@ -4,7 +4,10 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-windows:
@@ -23,13 +26,13 @@ jobs:
           pip install pillow numpy pyinstaller
 
       - name: Build with PyInstaller
-        run: pyinstaller PDF合并工具.spec
+        run: pyinstaller PDFMerger.spec
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PDF合并工具-Windows
-          path: dist/PDF合并工具.exe
+          name: PDFMerger-Windows
+          path: dist/PDFMerger.exe
 
   build-mac:
     runs-on: macos-latest
@@ -47,10 +50,10 @@ jobs:
           pip install pillow numpy pyinstaller
 
       - name: Build with PyInstaller
-        run: pyinstaller PDF合并工具.spec
+        run: pyinstaller PDFMerger.spec
 
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PDF合并工具-Mac
-          path: dist/PDF合并工具.app
+          name: PDFMerger-Mac
+          path: dist/PDFMerger.app
