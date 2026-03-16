@@ -42,9 +42,16 @@ try:
     if __name__ == "__main__":
         main()
 except ImportError as e:
-    print(f"导入错误：{e}")
-    print("请确保已安装所需依赖：pip install -r requirements.txt")
-    input("按任意键退出...")
+    import tkinter as tk
+    from tkinter import messagebox
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showerror("启动错误", f"导入错误：{e}\n\n请重新下载程序")
+    root.destroy()
 except Exception as e:
-    print(f"程序启动失败：{e}")
-    input("按任意键退出...")
+    import tkinter as tk
+    from tkinter import messagebox
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showerror("启动错误", f"程序启动失败：{e}")
+    root.destroy()
