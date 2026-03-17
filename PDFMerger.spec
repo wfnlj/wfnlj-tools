@@ -47,7 +47,21 @@ if sys.platform == 'darwin':
         upx=False,
         console=False,
     )
-    app = BUNDLE(exe, name='PDFMerger.app', icon=None)
+    # 修复 Mac app 架构问题
+    app = BUNDLE(
+        exe,
+        name='PDFMerger.app',
+        icon=None,
+        info_plist={
+            'CFBundleName': 'PDFMerger',
+            'CFBundleDisplayName': 'PDFMerger',
+            'CFBundleIdentifier': 'com.wfnlj.pdfmerger',
+            'CFBundleVersion': '1.1.3',
+            'CFBundleShortVersionString': '1.1.3',
+            'NSHighResolutionCapable': True,
+            'LSMinimumSystemVersion': '10.13.0',
+        }
+    )
 else:
     exe = EXE(
         pyz,
