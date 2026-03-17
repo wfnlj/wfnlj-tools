@@ -1,4 +1,7 @@
+PyPDF2
 pillow
 numpy
 pyinstaller
-PyPDF2
+requests
+schedule
+cryptography
