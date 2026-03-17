@@ -2,16 +2,28 @@
 import sys
 from PyInstaller.utils.hooks import collect_all
 
-# 收集 PyPDF2 的所有模块
+# 收集所有第三方库
 pyPDF2_datas, pyPDF2_binaries, pyPDF2_hiddenimports = collect_all('PyPDF2')
 pil_datas, pil_binaries, pil_hiddenimports = collect_all('PIL')
+requests_datas, requests_binaries, requests_hiddenimports = collect_all('requests')
+schedule_datas, schedule_binaries, schedule_hiddenimports = collect_all('schedule')
+crypto_datas, crypto_binaries, crypto_hiddenimports = collect_all('cryptography')
+
+# 合并所有数据
+all_datas = pyPDF2_datas + pil_datas + requests_datas + schedule_datas + crypto_datas
+all_binaries = pyPDF2_binaries + pil_binaries + requests_binaries + schedule_binaries + crypto_binaries
+all_hiddenimports = list(set(
+    pyPDF2_hiddenimports + pil_hiddenimports + 
+    requests_hiddenimports + schedule_hiddenimports + crypto_hiddenimports + 
+    ['numpy']
+))
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=pyPDF2_binaries + pil_binaries,
-    datas=pyPDF2_datas + pil_datas,
-    hiddenimports=list(set(pyPDF2_hiddenimports + pil_hiddenimports + ['numpy'])),
+    binaries=all_binaries,
+    datas=all_datas,
+    hiddenimports=all_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
